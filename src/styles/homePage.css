@@ -1,0 +1,71 @@
+.hero, .features {
+    max-width: 900px;
+    margin: 0 auto 48px;
+}
+
+.hero h1 {
+    font-size: 36px;
+    color: #101828;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+}
+
+.hero p {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #475467;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.feature-card {
+    background: #ffffff;
+    border: 2px solid #eaecf0; /* Светлая рамка */
+    border-radius: 12px;
+    padding: 32px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card:hover {
+    border-color: #7f56d9; /* Фиолетовый бренд */
+    background: #f9f5ff; /* Светло-фиолетовый фон */
+    transform: translateY(-2px);
+    box-shadow: 0 12px 16px -4px rgba(16, 24, 40, 0.08);
+}
+
+.feature-card h3 {
+    font-size: 20px;
+    color: #101828;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.feature-card h3::before {
+    content: "📊"; 
+    font-size: 24px;
+}
+
+.feature-card p {
+    font-size: 15px;
+    color: #667085;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.feature-card h3 {
+    color: #101828;
+    transition: color 0.2s;
+}
+
+.feature-card:hover h3 {
+    color: #7f56d9;
+}
