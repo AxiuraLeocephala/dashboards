@@ -1,6 +1,15 @@
+import { useRef, useState } from "react";
 import "./../styles/uploadFile.css";
 
 const UploadFile = () => {
+    const inputRef = useRef();
+    const [file, setFile] = useState(null);
+    const [isActiveDropZone, setIsDropZone] = useState(false);
+
+    const handleClickDropZone = () => {
+        inputRef.current.click();
+    };
+
     return (
         <section class="upload-container">
             <header class="upload-header">
@@ -8,7 +17,15 @@ const UploadFile = () => {
                 <p>Выберите файл с результатами тестирования для формирования дашборда</p>
             </header>
 
-            <div class="drop-zone" id="dropZone">
+            <div 
+            class={isActiveDropZone ? "drop-zone active" : "drop-zone"} 
+            onClick={handleClickDropZone}
+            // onDragOver={setIsDropZone(true)}
+            // onDrop={() => {
+            //     setIsDropZone(false);
+            //     handleClickDropZone();
+            // }}
+            >
                 <div class="drop-zone-content">
                     <div class="upload-icon">📄</div>
                     <p class="drop-zone-text">Перетащите файл сюда или
@@ -16,53 +33,36 @@ const UploadFile = () => {
                     </p>
                     <p class="file-limits">Максимальный размер файла: 10 МБ (CSV, XLSX, XLS)</p>
                 </div>
-                <input type="file" id="fileInput" hidden accept=".csv, .xlsx, .xls"/>
+                <input
+                ref={inputRef}  
+                type="file" 
+                hidden 
+                accept=".csv, .xlsx, .xls"
+                onChange={e => setFile(e.target.files[0])}
+                />
             </div>
 
-            <div class="file-list" id="fileList">
-                <div class="file-item">
-                    <div class="file-info">
-                        <span class="file-icon">📊</span>
-                        <div>
-                            <p class="file-name">results_2023.xlsx</p>
-                            <p class="file-size">1.2 MB</p>
+            {file &&
+                <>
+                    <div class="file-list" id="fileList">
+                        <div class="file-item">
+                            <div class="file-info">
+                                <span class="file-icon">📊</span>
+                                <div>
+                                    <p class="file-name">{file.name}</p>
+                                    <p class="file-size">{(file.size / (1024 * 1024)).toFixed(2)} MB</p>
+                                </div>
+                            </div>
+                            <button class="remove-btn">✕</button>
                         </div>
                     </div>
-                    <button class="remove-btn">✕</button>
-                </div>
-            </div>
 
-            <div class="preview-section">
-                <h4>Предварительный просмотр структуры</h4>
-                <div class="preview-table-wrapper">
-                    <table class="preview-table">
-                        <thead>
-                            <tr>
-                                <th>Студент</th>
-                                <th>ID Теста</th>
-                                <th>Балл</th>
-                                <th>Дата</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Иванов Иван</td>
-                                <td>T-001</td>
-                                <td>85</td>
-                                <td>12.10.2023</td>
-                            </tr>
-                            <tr class="placeholder-row">
-                                <td colspan="4">Данные появятся после выбора файла...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="upload-actions">
-                <button class="cancel-btn">Отмена</button>
-                <button class="primary-btn" id="analyzeBtn" disabled>Анализировать данные</button>
-            </div>
+                    <div class="upload-actions">
+                        <button class="cancel-btn">Отмена</button>
+                        <button class="primary-btn" id="analyzeBtn" disabled>Анализировать данные</button>
+                    </div>
+                </>
+            }
         </section>
     )
 }
