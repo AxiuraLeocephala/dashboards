@@ -7,7 +7,7 @@ const MainContent = ({activeBarID, setActiveBarID, file, setFile}) => {
     const renderContent = (activeBarID) => {
         switch (activeBarID) {
             case 0: return <HomePage setActiveBarID={setActiveBarID}/>
-            case 1: return <Dashboards/>
+            case 1: return <Dashboards file={file}/>
             case 2: return <UploadFile file={file} setFile={setFile}/>
         }
     }
