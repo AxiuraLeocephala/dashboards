@@ -8,9 +8,10 @@ const MainContent = ({activeBarID, setActiveBarID, file, setFile}) => {
         switch (activeBarID) {
             case 0: return <HomePage setActiveBarID={setActiveBarID}/>
             case 1: return <Dashboards file={file}/>
-            case 2: return <UploadFile file={file} setFile={setFile}/>
+            case 2: return <UploadFile file={file} setFile={setFile} setActiveBarID={setActiveBarID}/>
+            default: return <HomePage setActiveBarID={setActiveBarID}/>;
         }
-    }
+    };
 
     return (
         <div className="main-content">

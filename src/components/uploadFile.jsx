@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import "./../styles/uploadFile.css";
 
-const UploadFile = ({file, setFile}) => {
+const UploadFile = ({file, setFile, setActiveBarID}) => {
     const inputRef = useRef();
     const [isActiveDropZone, setIsDropZone] = useState(false);
 
@@ -10,15 +10,15 @@ const UploadFile = ({file, setFile}) => {
     };
 
     return (
-        <section class="upload-container">
-            <header class="upload-header">
+        <section className="upload-container">
+            <header className="upload-header">
                 <h1>Загрузка данных</h1>
                 <p>Выберите файл с результатами тестирования для формирования дашборда</p>
             </header>
 
             <div 
-            class={isActiveDropZone ? "drop-zone active" : "drop-zone"} 
-            onClick={handleClickDropZone}onDragOver={() => setIsDropZone(true)}
+            className={isActiveDropZone ? "drop-zone active" : "drop-zone"} 
+            onClick={handleClickDropZone}
             onDragOver={e => {
                 e.preventDefault();
                 setIsDropZone(true);
@@ -36,12 +36,12 @@ const UploadFile = ({file, setFile}) => {
                 }
             }}
             >
-                <div class="drop-zone-content">
-                    <div class="upload-icon">📄</div>
-                    <p class="drop-zone-text">Перетащите файл сюда или
-                        <span class="browse-text"> выберите на компьютере</span>
+                <div className="drop-zone-content">
+                    <div className="upload-icon">📄</div>
+                    <p className="drop-zone-text">Перетащите файл сюда или
+                        <span className="browse-text"> выберите на компьютере</span>
                     </p>
-                    <p class="file-limits">Максимальный размер файла: 10 МБ (CSV, XLSX, XLS)</p>
+                    <p className="file-limits">Максимальный размер файла: 10 МБ (CSV, XLSX, XLS)</p>
                 </div>
                 <input
                 ref={inputRef}  
@@ -57,22 +57,22 @@ const UploadFile = ({file, setFile}) => {
 
             {file &&
                 <>
-                    <div class="file-list" id="fileList">
-                        <div class="file-item">
-                            <div class="file-info">
-                                <span class="file-icon">📊</span>
+                    <div className="file-list" id="fileList">
+                        <div className="file-item">
+                            <div className="file-info">
+                                <span className="file-icon">📊</span>
                                 <div>
-                                    <p class="file-name">{file.name}</p>
-                                    <p class="file-size">{(file.size / (1024 * 1024)).toFixed(2)} MB</p>
+                                    <p className="file-name">{file.name}</p>
+                                    <p className="file-size">{(file.size / (1024 * 1024)).toFixed(2)} MB</p>
                                 </div>
                             </div>
-                            {/* <button class="remove-btn" onClick={() => setFile(null)}>✕</button> */}
+                            <button className="remove-btn" onClick={() => setFile(null)}>✕</button>
                         </div>
                     </div>
 
-                    <div class="upload-actions">
-                        <button class="cancel-btn" onClick={() => setFile(null)}>Отмена</button>
-                        <button class="primary-btn">Анализировать данные</button>
+                    <div className="upload-actions">
+                        <button className="cancel-btn" onClick={() => setFile(null)}>Отмена</button>
+                        <button className="primary-btn" onClick={() => setActiveBarID(1)}>Анализировать данные</button>
                     </div>
                 </>
             }

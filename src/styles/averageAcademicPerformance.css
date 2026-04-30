@@ -1,0 +1,137 @@
+.atl-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 20px 22px;
+    border-radius: 16px;
+    background: linear-gradient(145deg, #ffffff, #f3f5f9);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    font-family: Inter, Arial, sans-serif;
+    width: fit-content;
+    min-width: 220px;
+}
+
+.atl-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6b7280;
+    letter-spacing: 0.4px;
+}
+
+.atl-value {
+    font-size: 34px;
+    font-weight: 800;
+    color: #111827;
+    line-height: 1;
+}
+
+/* modern "traffic indicator" bar instead of classic light */
+.atl-light {
+    width: 100%;
+    height: 10px;
+    border-radius: 999px;
+    position: relative;
+    overflow: hidden;
+    background: #e5e7eb;
+}
+
+/* animated fill */
+.atl-light::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: var(--fill, 50%);
+    transition: width 0.4s ease;
+    border-radius: 999px;
+}
+
+/* color states */
+.atl-excellent {
+    --fill: 100%;
+}
+.atl-excellent::after {
+    background: linear-gradient(90deg, #22c55e, #16a34a);
+}
+
+.atl-good {
+    --fill: 80%;
+}
+.atl-good::after {
+    background: linear-gradient(90deg, #84cc16, #22c55e);
+}
+
+.atl-medium {
+    --fill: 60%;
+}
+.atl-medium::after {
+    background: linear-gradient(90deg, #facc15, #f59e0b);
+}
+
+.atl-bad {
+    --fill: 40%;
+}
+.atl-bad::after {
+    background: linear-gradient(90deg, #fb923c, #f97316);
+}
+
+.atl-critical {
+    --fill: 20%;
+}
+.atl-critical::after {
+    background: linear-gradient(90deg, #ef4444, #b91c1c);
+}
+
+/* subtle badge below */
+.atl-badge {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    background: #eef2ff;
+    color: #4f46e5;
+}
+
+/* states for badge */
+.atl-excellent + .atl-badge {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.atl-good + .atl-badge {
+    background: #ecfccb;
+    color: #65a30d;
+}
+
+.atl-medium + .atl-badge {
+    background: #fef9c3;
+    color: #ca8a04;
+}
+
+.atl-bad + .atl-badge {
+    background: #ffedd5;
+    color: #ea580c;
+}
+
+.atl-critical + .atl-badge {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.atl-loading {
+    padding: 10px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.atl-error {
+    padding: 10px;
+    color: #dc2626;
+    font-weight: 600;
+    font-size: 14px;
+}
