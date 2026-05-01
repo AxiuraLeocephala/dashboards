@@ -1,6 +1,7 @@
 .main {
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
     display: flex;
-    background-color: #f9fafb;
+    background: radial-gradient(circle at 20% 20%, #1c2d83 0%, #090f2e 45%, #060a1f 100%);
+    color: #e6ebff;
 }
