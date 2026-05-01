@@ -194,11 +194,11 @@ const Dashboards = ({ file }) => {
                     <div className="tables-grid">
                         <article className="chart-card">
                             <h3>Топ факультетов по успешности</h3>
-                            {metrics.topFaculty.map((f) => <p key={f.name}>{f.name}: {f.passRate.toFixed(1)}% (ср. балл {f.avg.toFixed(1)}%)</p>)}
+                            {metrics.topFaculty.map((f) => <p className="stats-row" key={f.name}><span>{f.name}</span><span>{f.passRate.toFixed(1)}% · ср. балл {f.avg.toFixed(1)}%</span></p>)}
                         </article>
                         <article className="chart-card">
                             <h3>Группы риска по доле несдач</h3>
-                            {metrics.riskyGroups.map((g) => <p key={g.name}>{g.name}: {g.failRate.toFixed(1)}% несдач ({g.total} попыток)</p>)}
+                            {metrics.riskyGroups.map((g) => <p className="stats-row" key={g.name}><span>{g.name}</span><span>{g.failRate.toFixed(1)}% несдач · {g.total} попыток</span></p>)}
                         </article>
                     </div>
                 </>
