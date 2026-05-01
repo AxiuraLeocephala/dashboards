@@ -4,7 +4,7 @@ import MainContent from "../components/mainContent";
 import "./../styles/main.css";
 
 function Main () {
-    const [activeBarID, setActiveBarID] = useState(1);
+    const [activeBarID, setActiveBarID] = useState(2);
     const bars = [
         {id: 0, title: "Домашняя", position: "top"},
         {id: 1, title: "Дашборды", position: "top"},

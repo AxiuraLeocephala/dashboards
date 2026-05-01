@@ -1,23 +1,18 @@
 import { useEffect, useMemo, useState } from "react";
 import * as XLSX from "xlsx";
-import {
-    Bar,
-    BarChart,
-    CartesianGrid,
-    Cell,
-    Pie,
-    PieChart,
-    ResponsiveContainer,
-    Tooltip,
-    XAxis,
-    YAxis,
-} from "recharts";
 import templateFile from "./../data/Moodle_MARGU_analytics_template.xlsx";
 import AverageAcademicPerformance from "./Charts/averageAcademicPerformance";
-import SuccessRate from "./Charts/successRate";
+import PassRateChart from "./Charts/passRateChart";
+import AverageDuration from "./Charts/averageDuration";
+import FacultyRating from "./Charts/facultyRationg";
+import FacultySuccessRate from "./Charts/facultySuccessRate";
+import HardestCourses from "./Charts/hardestCourses";
+import EasiestCourses from "./Charts/easiestCoursees";
+import MonthlyResults from "./Charts/monthlyResults";
+import SuccessTrend from "./Charts/successTrend";
+import TimeDistribution from "./Charts/timeDistribution";
+import TimeResultDependency from "./Charts/timeResultDependency";
 import "./../styles/dashboards.css";
-
-const palette = ["#6366f1", "#14b8a6", "#f59e0b", "#ef4444", "#8b5cf6", "#06b6d4"];
 
 const Dashboards = ({ file }) => {
     const [rows, setRows] = useState([]);
@@ -113,35 +108,50 @@ const Dashboards = ({ file }) => {
                     <AverageAcademicPerformance rows={rows}/>
                 </article>
                 <article className="kpi-card">
-                    <h3>Колонок</h3>
-                    <p>{dashboardData.columns.length}</p>
+                    <PassRateChart rows={rows}/>
                 </article>
                 <article className="kpi-card">
-                    <h3>Сумма по метрике</h3>
-                    <p>{dashboardData.totalValue}</p>
-                    <small>
-                        {dashboardData.metricColumn ? `Поле: ${dashboardData.metricColumn}` : "Метрика не найдена"}
-                    </small>
+                    <AverageDuration rows={rows}/>
                 </article>
             </div>
 
             <div className="charts-grid">
                 <article className="chart-card">
-                    <h3>Топ категорий (Bar)</h3>
-                    <ResponsiveContainer width="100%" height={320}>
-                        <BarChart data={dashboardData.topCategories}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-                            <YAxis />
-                            <Tooltip />
-                            <Bar dataKey="value" fill="#6366f1" radius={[8, 8, 0, 0]} />
-                        </BarChart>
-                    </ResponsiveContainer>
+                    <FacultyRating  rows={rows}/>
                 </article>
 
                 <article className="chart-card">
-                    <h3>Доля успешных попыток</h3>
-                    <SuccessRate rows={rows}/>
+                    <FacultySuccessRate rows={rows}/>
+                </article>
+            </div>
+            
+            <div className="charts-grid">
+                <article className="chart-card">
+                    <HardestCourses  rows={rows}/>
+                </article>
+                
+                <article className="chart-card">
+                    <EasiestCourses  rows={rows}/>
+                </article>
+            </div>
+
+            <div className="charts-grid">
+                <article className="chart-card">
+                    <MonthlyResults  rows={rows}/>
+                </article>
+                
+                <article className="chart-card">
+                    <SuccessTrend  rows={rows}/>
+                </article>
+            </div>
+
+            <div className="charts-grid">
+                <article className="chart-card">
+                    <TimeDistribution  rows={rows}/>
+                </article>
+                
+                <article className="chart-card">
+                    <TimeResultDependency  rows={rows}/>
                 </article>
             </div>
         </section>

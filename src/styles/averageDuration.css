@@ -1,0 +1,44 @@
+.ad-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 20px;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #ffffff, #f3f4f6);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    font-family: Inter, Arial, sans-serif;
+    min-width: 220px;
+}
+
+.ad-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ad-value {
+    font-size: 34px;
+    font-weight: 800;
+    color: #2563eb;
+    line-height: 1;
+}
+
+.ad-meta {
+    font-size: 13px;
+    color: #374151;
+}
+
+.ad-loading {
+    padding: 10px;
+    color: #6b7280;
+}
+
+.ad-error {
+    padding: 10px;
+    color: #dc2626;
+    font-weight: 600;
+}
