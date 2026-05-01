@@ -3,49 +3,33 @@
     flex-direction: column;
     flex-shrink: 0;
     width: 250px;
-    padding: 24px;
-    padding-top: 0;
-    margin: 15px;
-    border-radius: 20px;
-    border: 1px solid  #eaecf0;
-    background-color: #fff;
+    padding: 20px;
+    margin: 16px;
+    border-radius: 22px;
+    border: 1px solid rgba(126, 151, 255, 0.28);
+    background: linear-gradient(160deg, rgba(15, 27, 86, 0.98), rgba(9, 16, 59, 0.95));
 }
 .sidebar h2 {
-    margin-top: 15px;
-    padding-left: 5px;
+    margin-top: 10px;
+    margin-bottom: 16px;
+    color: #d9e2ff;
+    letter-spacing: .03em;
 }
-.sidebar .nav-top, .nav-buttom {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-.sidebar .nav-top {
-    flex-glow: 1;
-}
-.sidebar .nav-buttom {
-    margin-top: auto;
-}
+.sidebar .nav-top, .nav-buttom { display: flex; flex-direction: column; gap: 8px; }
+.sidebar .nav-buttom { margin-top: auto; }
 .sidebar button {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 12px;
-    border: none;
-    border-radius: 8px;
-    background-color: transparent;
-    color: #344054;
+    padding: 11px 12px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    background: transparent;
+    color: #b8c5ff;
     font-size: 14px;
-    font-weight: 500;
     cursor: pointer;
-    transition: all .2s easy;
     text-align: left;
-    width: 100%;
 }
-.sidebar button:hover {
-  background-color: #f2f4f7;
-  color: #101828;
-}
+.sidebar button:hover { background: rgba(120, 133, 255, 0.14); color: #eef2ff; }
 .sidebar button.active {
-  background-color: #f9f5ff;
-  color: #7f56d9;
+    background: linear-gradient(90deg, rgba(118, 74, 245, 0.55), rgba(66, 110, 255, 0.42));
+    border-color: rgba(172, 154, 255, 0.55);
+    color: #fff;
 }
