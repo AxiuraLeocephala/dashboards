@@ -1,4 +1,6 @@
-import "./../styles/homePage.css"
+import { Upload } from "lucide-react";
+
+import "./../styles/homePage.css";
 
 const HomePage = ({setActiveBarID}) => {
     return (
@@ -10,7 +12,7 @@ const HomePage = ({setActiveBarID}) => {
 
             <section className="features">
                 <div className="feature-card" onClick={() => {setActiveBarID(2)}}>
-                    <h3>Загрузите CSV/Excel</h3>
+                    <h3><Upload/>Загрузите CSV/Excel</h3>
                     <p>Экспортируйте результаты из вашей системы обучения и перетащите их сюда.</p>
                 </div>
             </section>

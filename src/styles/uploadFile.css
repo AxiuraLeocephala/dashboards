@@ -1,17 +1,22 @@
 .upload-container {
     max-width: 900px;
     margin: 0 auto;
+    color: #fff;
 }
 
-/* Зона загрузки с анимацией */
+.upload-header {
+    margin-left: 90px;
+}
+
 .drop-zone {
-    border: 2px dashed #d0d5dd;
     border-radius: 12px;
     padding: 40px;
     text-align: center;
-    background: #fff;
     cursor: pointer;
     transition: all 0.2s ease;
+    margin: 50px;
+    background: rgba(33, 34, 45, 0.671);
+    border: 2px dashed rgba(253, 253, 253, 0.342);
 }
 
 .drop-zone.active {
@@ -20,7 +25,7 @@
 }
 
 .browse-text {
-    color: #7f56d9;
+    color: rgb(154, 236, 225);
     font-weight: 600;
 }
 
@@ -30,8 +35,8 @@
     margin-top: 8px;
 }
 
-/* Список выбранных файлов */
 .file-list {
+    margin: 50px;
     margin-top: 24px;
 }
 
@@ -40,28 +45,28 @@
     justify-content: space-between;
     align-items: center;
     padding: 16px;
-    background: #f9fafb;
-    border: 1px solid #eaecf0;
+    background: rgb(33, 34, 45);
     border-radius: 8px;
 }
 
 .file-info {
     display: flex;
-    gap: 12px;
+    gap: 20px;
     align-items: center;
 }
 
 .file-name {
     font-weight: 500;
     font-size: 14px;
+    margin-bottom: 5px;
 }
 
 .file-size {
     font-size: 12px;
     color: #667085;
+    margin-top: 5px;
 }
 
-/* Предпросмотр таблицы */
 .preview-section {
     margin-top: 32px;
 }
@@ -96,23 +101,38 @@
     text-align: center;
 }
 
-/* Кнопки управления */
 .upload-actions {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
-    margin-top: 32px;
+    margin: 32px 50px 0;
 }
 
-.cancel-btn {
-    background: white;
-    border: 1px solid #d0d5dd;
-    padding: 10px 18px;
-    border-radius: 8px;
+.remove-btn {
+    width: 25px;
+    height: 25px;
+    border: none;
+    border-radius: 25%;
+    font-weight: 600;
     cursor: pointer;
 }
 
-.primary-btn:disabled {
-    background: #d0d5dd;
-    cursor: not-allowed;
+.cancel-btn {
+    background: rgb(223, 169, 169);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    color: rgb(34, 34, 34);
+}
+
+.primary-btn {
+    background: rgb(174, 223, 169);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    color: rgb(34, 34, 34);
 }

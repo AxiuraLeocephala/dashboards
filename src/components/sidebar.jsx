@@ -16,7 +16,7 @@ const Sidebar = ({bars, activeBarID, setActiveBarID}) => {
                     className={activeBarID === bar.id ? "active" : ""} 
                     onClick={() => setActiveBarID(bar.id)
                     }>
-                        {bar.title}
+                        {bar.icon} {bar.title}
                     </button>
                 ))}
             </nav>
@@ -27,7 +27,7 @@ const Sidebar = ({bars, activeBarID, setActiveBarID}) => {
                     className={activeBarID === bar.id ? "active" : ""}
                     onClick={() => setActiveBarID(bar.id)
                     }>
-                        {bar.title}
+                        {bar.icon} {bar.title}
                     </button>
                 ))}
             </nav>

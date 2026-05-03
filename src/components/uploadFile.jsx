@@ -1,3 +1,5 @@
+import { File, Table2 } from "lucide-react";
+
 import { useRef, useState } from "react";
 import "./../styles/uploadFile.css";
 
@@ -37,7 +39,7 @@ const UploadFile = ({file, setFile, setActiveBarID}) => {
             }}
             >
                 <div className="drop-zone-content">
-                    <div className="upload-icon">📄</div>
+                    <div className="upload-icon"><File /></div>
                     <p className="drop-zone-text">Перетащите файл сюда или
                         <span className="browse-text"> выберите на компьютере</span>
                     </p>
@@ -60,7 +62,7 @@ const UploadFile = ({file, setFile, setActiveBarID}) => {
                     <div className="file-list" id="fileList">
                         <div className="file-item">
                             <div className="file-info">
-                                <span className="file-icon">📊</span>
+                                <span className="file-icon"><Table2 /></span>
                                 <div>
                                     <p className="file-name">{file.name}</p>
                                     <p className="file-size">{(file.size / (1024 * 1024)).toFixed(2)} MB</p>

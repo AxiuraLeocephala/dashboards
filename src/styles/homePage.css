@@ -8,12 +8,13 @@
     color: #101828;
     margin-bottom: 16px;
     letter-spacing: -0.02em;
+    color: white;
 }
 
 .hero p {
     font-size: 18px;
     line-height: 1.6;
-    color: #475467;
+    color: #5e6774;
 }
 
 .features {
@@ -23,8 +24,8 @@
 }
 
 .feature-card {
-    background: #ffffff;
-    border: 2px solid #eaecf0; /* Светлая рамка */
+    background: rgba(33, 34, 45);
+    border: 2px solid rgb(75, 75, 77);
     border-radius: 12px;
     padding: 32px;
     cursor: pointer;
@@ -34,15 +35,13 @@
 }
 
 .feature-card:hover {
-    border-color: #7f56d9; /* Фиолетовый бренд */
-    background: #f9f5ff; /* Светло-фиолетовый фон */
     transform: translateY(-2px);
     box-shadow: 0 12px 16px -4px rgba(16, 24, 40, 0.08);
 }
 
 .feature-card h3 {
     font-size: 20px;
-    color: #101828;
+    color: #fff;
     margin-bottom: 12px;
     display: flex;
     align-items: center;
@@ -50,7 +49,6 @@
 }
 
 .feature-card h3::before {
-    content: "📊"; 
     font-size: 24px;
 }
 
@@ -62,10 +60,9 @@
 }
 
 .feature-card h3 {
-    color: #101828;
     transition: color 0.2s;
 }
 
 .feature-card:hover h3 {
-    color: #7f56d9;
+    color: rgb(169, 223, 216);
 }

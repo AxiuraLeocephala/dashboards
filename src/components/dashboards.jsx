@@ -1,24 +1,49 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
+import { History, BookOpenCheck, Grid2x2Check, Users, ChartBar } from "lucide-react";
+
 import templateFile from "./../data/Moodle_MARGU_analytics_template.xlsx";
-import AverageAcademicPerformance from "./Charts/averageAcademicPerformance";
-import PassRateChart from "./Charts/passRateChart";
-import AverageDuration from "./Charts/averageDuration";
-import FacultyRating from "./Charts/facultyRationg";
-import FacultySuccessRate from "./Charts/facultySuccessRate";
-import HardestCourses from "./Charts/hardestCourses";
-import EasiestCourses from "./Charts/easiestCoursees";
-import MonthlyResults from "./Charts/monthlyResults";
-import SuccessTrend from "./Charts/successTrend";
-import TimeDistribution from "./Charts/timeDistribution";
-import TimeResultDependency from "./Charts/timeResultDependency";
+import OverviewKPIs from "./Chart/overviewKPIs";
+import MonthlyActivity from "./Chart/monthlyActivity";
+import PassFailPie from "./Chart/passFailPie";
+import FacultyRating from "./Chart/facultyRating";
+import FacultyTable from "./Chart/facultyTable";
+import Top10Groups from "./Chart/top10Groups";
+import GroupComparison from "./Chart/groupComparison";
+import GroupDynamics from "./Chart/groupDynamics";
+import QuizDifficultyRating from "./Chart/quizDifficultyRating"
+import TopCoursesByScore from "./Chart/topCoursesByScore";
+import AttemptsPerQuiz from "./Chart/attemptsPerQuiz";
+import PassRateByAttempt from "./Chart/passRateByAttempt";
+import FirstAttemptDistribution from "./Chart/firstAttemptDistribution";
+import ScoreImprovement from "./Chart/scoreImprovement";
+import TimeScoreCorrelation from "./Chart/timeScoreCorrelation";
+import DurationHistogram from "./Chart/durationHistogram";
+import AvgDurationByQuiz from "./Chart/avgDurationByQuiz";
+import SeasonalityChart from "./Chart/seasonalityChart";
+import TopStudentsByAttempts from "./Chart/topStudentsByAttempts";
+import TopStudentsByScore from "./Chart/topStudentsByScore";
 import "./../styles/dashboards.css";
 
 const Dashboards = ({ file }) => {
     const [rows, setRows] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
-    const [activeDashboard, setActiveDashboard] = useState("main");
+
+    const TABS = [
+        { id: "overview", icon: <ChartBar />, label: `Общие KPI` },
+        { id: "faculty", icon: <Users />, label: "Факультеты и группы" },
+        { id: "courses", icon: <BookOpenCheck />, label: "Курсы и тесты" },
+        { id: "attempts", icon: <Grid2x2Check />, label: "Анализ попыток" },
+        { id: "time", icon: <History/>, label: `Время и студенты` },
+    ];
+    const [tab, setTab] = useState(TABS[0].id);
+    const C = {
+        blue: "#3b82f6", cyan: "#06b6d4", green: "#10b981", amber: "#f59e0b",
+        red: "#ef4444", purple: "#8b5cf6", pink: "#ec4899", indigo: "#6366f1",
+        teal: "#14b8a6", orange: "#f97316",
+    };
+    const COLORS = Object.values(C);
 
     useEffect(() => {
         const parseFile = async () => {
@@ -44,165 +69,107 @@ const Dashboards = ({ file }) => {
         parseFile();
     }, [file]);
 
-    const metrics = useMemo(() => {
-        if (!rows.length) return null;
-
-        const parseDate = (value) => {
-            if (!value) return null;
-            if (value instanceof Date) return value;
-            if (typeof value === "number") return new Date(Math.round((value - 25569) * 86400 * 1000));
-            return null;
-        };
-
-        const attemptsByStudent = {};
-        const byFaculty = {};
-        const riskGroups = {};
-
-        let passCount = 0;
-        let totalPercent = 0;
-        let totalDuration = 0;
-        let validPercent = 0;
-        let validDuration = 0;
-
-        rows.forEach((r) => {
-            const sid = r.student_id;
-            const grp = r.group || "Не указана";
-            const faculty = r.faculty || "Не указан";
-            const result = r.result;
-            const percent = Number(r.percent);
-            const durationSec = Number(r.duration_sec);
-
-            attemptsByStudent[sid] = (attemptsByStudent[sid] || 0) + 1;
-            riskGroups[grp] = riskGroups[grp] || { total: 0, failed: 0 };
-            byFaculty[faculty] = byFaculty[faculty] || { total: 0, passed: 0, percentSum: 0, valid: 0 };
-
-            riskGroups[grp].total += 1;
-            byFaculty[faculty].total += 1;
-
-            if (result === "Сдано") {
-                passCount += 1;
-                byFaculty[faculty].passed += 1;
-            } else {
-                riskGroups[grp].failed += 1;
-            }
-
-            if (!Number.isNaN(percent)) {
-                totalPercent += percent;
-                validPercent += 1;
-                byFaculty[faculty].percentSum += percent;
-                byFaculty[faculty].valid += 1;
-            }
-
-            if (!Number.isNaN(durationSec)) {
-                totalDuration += durationSec;
-                validDuration += 1;
-            }
-        });
-
-        const uniqueStudents = Object.keys(attemptsByStudent).length;
-        const retries = Object.values(attemptsByStudent).filter((n) => n > 1).length;
-        const avgAttempts = uniqueStudents ? rows.length / uniqueStudents : 0;
-        const passRate = rows.length ? (passCount / rows.length) * 100 : 0;
-        const avgPercent = validPercent ? totalPercent / validPercent : 0;
-        const avgDurationMin = validDuration ? totalDuration / validDuration / 60 : 0;
-
-        const topFaculty = Object.entries(byFaculty)
-            .map(([name, val]) => ({ name, passRate: (val.passed / val.total) * 100, avg: val.valid ? val.percentSum / val.valid : 0 }))
-            .sort((a, b) => b.passRate - a.passRate)
-            .slice(0, 5);
-
-        const riskyGroups = Object.entries(riskGroups)
-            .filter(([, val]) => val.total >= 5)
-            .map(([name, val]) => ({ name, failRate: (val.failed / val.total) * 100, total: val.total }))
-            .sort((a, b) => b.failRate - a.failRate)
-            .slice(0, 5);
-
-        const dates = rows.map((r) => parseDate(r.start_time)).filter(Boolean);
-        const minDate = dates.length ? new Date(Math.min(...dates)) : null;
-        const maxDate = dates.length ? new Date(Math.max(...dates)) : null;
-
-        return {
-            totalAttempts: rows.length,
-            uniqueStudents,
-            retries,
-            avgAttempts,
-            passRate,
-            avgPercent,
-            avgDurationMin,
-            topFaculty,
-            riskyGroups,
-            period: minDate && maxDate ? `${minDate.toLocaleDateString("ru-RU")} — ${maxDate.toLocaleDateString("ru-RU")}` : "—",
-        };
-    }, [rows]);
-
     if (loading) return <p className="dashboards-state">Загружаем и анализируем данные...</p>;
     if (error) return <p className="dashboards-state dashboards-error">{error}</p>;
-    if (!metrics) return <p className="dashboards-state">В таблице нет данных для визуализации.</p>;
 
     return (
         <section className="dashboards dashboards-theme">
-            <header className="dashboards-header">
-                <h1>Аналитика тестирования Moodle</h1>
-                <p>Период данных: {metrics.period} · Источник: {file ? file.name : "Moodle_MARGU_analytics_template.xlsx"}</p>
+            <header className="app-header">
+                <div className="header-inner">
+                    <div className="header-brand">
+                        {/* <span className="brand-icon">📈</span> */}
+                        <div>
+                            <h1>Аналитика тестирования</h1>
+                            <p>Moodle МAРГУ · 2025 · {rows.length} записей</p>
+                        </div>
+                    </div>
+                    <div className="header-meta">
+                        <span className="meta-tag">
+                            {rows.filter(r => r.result === "Сдано").length} сдали
+                        </span>
+                        <span className="meta-tag danger">
+                            {rows.filter(r => r.result === "Не сдано").length} не сдали
+                        </span>
+                    </div>
+                </div>
             </header>
+            
+            <div className="dashboard-parent">
+            <nav className="tab-bar">
+                {TABS.map(t => (
+                    <button 
+                    key={t.id} 
+                    className={`tab-btn${tab === t.id ? " active" : ""}`} 
+                    onClick={() => setTab(t.id)}
+                    >
+                        {t.icon}{t.label}
+                    </button>
+                ))}
+            </nav>
 
-            <div className="dashboard-tabs">
-                <button className={activeDashboard === "main" ? "active" : ""} onClick={() => setActiveDashboard("main")}>Основной</button>
-                <button className={activeDashboard === "performance" ? "active" : ""} onClick={() => setActiveDashboard("performance")}>Успеваемость</button>
-                <button className={activeDashboard === "behavior" ? "active" : ""} onClick={() => setActiveDashboard("behavior")}>Поведение и риск</button>
+            <div className="dashboard-main">
+                {tab === "overview" && (
+                    <>
+                        <OverviewKPIs rows={rows}/>
+                        <div className="grid-2">
+                            <MonthlyActivity rows={rows} C={C}/>
+                            <PassFailPie rows={rows} C={C}/>
+                        </div>
+                    </>
+                )}
+
+                {tab === "faculty" && (
+                    <>
+                        <FacultyRating rows={rows} C={C}/>
+                        <div className="grid-2">
+                            <FacultyTable rows={rows} C={C} COLORS={COLORS}/>
+                            <Top10Groups rows={rows} C={C}/>
+                        </div>
+                        <div className="grid-2">
+                            <GroupComparison rows={rows} C={C}/>
+                            <GroupDynamics rows={rows}  C={C}/>
+                        </div>
+                    </>
+                )}
+
+                {tab === "courses" && (
+                    <>
+                        <div className="grid-2">
+                            <QuizDifficultyRating rows={rows} C={C}/>
+                            <TopCoursesByScore rows={rows} COLORS={COLORS}/>
+                        </div>
+                        <AttemptsPerQuiz rows={rows} C={C}/>
+                    </>
+                )}
+
+                {tab === "attempts" && (
+                    <>
+                        <div className="grid-2">
+                            <PassRateByAttempt rows={rows} C={C}/>
+                            <FirstAttemptDistribution rows={rows} C={C}/>
+                        </div>
+                        <ScoreImprovement rows={rows} C={C} COLORS={COLORS}/>
+                    </>
+                )}
+
+                {tab === "time" && (
+                    <>
+                        <div className="grid-2">
+                            <TimeScoreCorrelation rows={rows} C={C}/>
+                            <DurationHistogram rows={rows} C={C}/>
+                        </div>
+                        <div className="grid-2">
+                            <AvgDurationByQuiz rows={rows} C={C}/>
+                            <SeasonalityChart rows={rows} C={C}/>
+                        </div>
+                        <div className="grid-2">
+                            <TopStudentsByAttempts rows={rows} C={C} COLORS={COLORS}/>
+                            <TopStudentsByScore rows={rows} C={C} COLORS={COLORS}/>
+                        </div>
+                    </>
+                )}
             </div>
-
-            {activeDashboard === "main" && (
-                <>
-                    <div className="kpi-grid">
-                        <article className="kpi-card"><h3>Всего попыток</h3><p>{metrics.totalAttempts}</p></article>
-                        <article className="kpi-card"><h3>Уникальных студентов</h3><p>{metrics.uniqueStudents}</p></article>
-                        <article className="kpi-card"><h3>Доля успешных сдач</h3><p>{metrics.passRate.toFixed(1)}%</p></article>
-                        <article className="kpi-card"><h3>Средний балл</h3><p>{metrics.avgPercent.toFixed(1)}%</p></article>
-                        <article className="kpi-card"><h3>Средняя длительность</h3><p>{metrics.avgDurationMin.toFixed(1)} мин</p></article>
-                        <article className="kpi-card"><h3>Студенты с пересдачами</h3><p>{metrics.retries} <small>({(metrics.avgAttempts).toFixed(2)} попытки/студ.)</small></p></article>
-                    </div>
-                    <div className="charts-grid">
-                        <article className="chart-card"><MonthlyResults rows={rows} /></article>
-                        <article className="chart-card"><SuccessTrend rows={rows} /></article>
-                    </div>
-                </>
-            )}
-
-            {activeDashboard === "performance" && (
-                <>
-                    <div className="kpi-grid">
-                        <article className="kpi-card"><AverageAcademicPerformance rows={rows} /></article>
-                        <article className="kpi-card"><PassRateChart rows={rows} /></article>
-                        <article className="kpi-card"><AverageDuration rows={rows} /></article>
-                    </div>
-                    <div className="charts-grid">
-                        <article className="chart-card"><FacultyRating rows={rows} /></article>
-                        <article className="chart-card"><FacultySuccessRate rows={rows} /></article>
-                        <article className="chart-card"><EasiestCourses rows={rows} /></article>
-                        <article className="chart-card"><HardestCourses rows={rows} /></article>
-                    </div>
-                </>
-            )}
-
-            {activeDashboard === "behavior" && (
-                <>
-                    <div className="charts-grid">
-                        <article className="chart-card"><TimeDistribution rows={rows} /></article>
-                        <article className="chart-card"><TimeResultDependency rows={rows} /></article>
-                    </div>
-                    <div className="tables-grid">
-                        <article className="chart-card">
-                            <h3>Топ факультетов по успешности</h3>
-                            {metrics.topFaculty.map((f) => <p className="stats-row" key={f.name}><span>{f.name}</span><span>{f.passRate.toFixed(1)}% · ср. балл {f.avg.toFixed(1)}%</span></p>)}
-                        </article>
-                        <article className="chart-card">
-                            <h3>Группы риска по доле несдач</h3>
-                            {metrics.riskyGroups.map((g) => <p className="stats-row" key={g.name}><span>{g.name}</span><span>{g.failRate.toFixed(1)}% несдач · {g.total} попыток</span></p>)}
-                        </article>
-                    </div>
-                </>
-            )}
+            </div>
         </section>
     );
 };

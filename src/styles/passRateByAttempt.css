@@ -1,0 +1,26 @@
+.attempt-stats { 
+    display: flex; 
+    gap: 12px; 
+    margin-top: 12px; 
+    flex-wrap: wrap; 
+}
+
+.attempt-stat { 
+    flex: 1; 
+    background: rgba(33, 34, 45); 
+    border-radius: 8px; 
+    padding: 10px 14px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    font-size: 0.8rem; 
+}
+
+.attempt-stat span { 
+    color: #64748b; 
+}
+
+.attempt-stat b { 
+    color: #f1f5f9; 
+    font-size: 1rem; 
+}
